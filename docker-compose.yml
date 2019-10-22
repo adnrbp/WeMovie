@@ -1,0 +1,43 @@
+version: "3"
+volumes:
+  local_postgres_data: {}
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./compose/local/backend/rails/Dockerfile
+    image: wemovie_backend
+    depends_on:
+      - postgres
+    env_file:
+      - ./.envs/.local/.postgres
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "8003:8003"
+    command: /start
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./compose/local/frontend/react/Dockerfile
+    image: wemovie_frontend
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.local/.postgres
