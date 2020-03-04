@@ -7,7 +7,7 @@ gem 'rails', '~> 5.2.1'
 # Storage
 gem 'pg', '>= 0.18', '< 2.0'
 # Deployment
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 # Auth
 gem 'devise'
 # Others
